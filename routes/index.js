@@ -5,20 +5,11 @@ var router = express.Router();
 
 
 /* GET home page. */
+
+
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'RCX' });
-  var PORT = 2000
-  var HOST = '192.168.1.2'
 
-  var dgram = require('dgram')
-  var message = new Buffer('*OPEN* ' + 'w\n*CLOS*')
-  var client = dgram.createSocket('udp4');
-  client.send(message, 0, message.length, PORT, HOST, function(err, bytes){
-    if(err) throw err;
-    console.log(err, bytes)
-    console.log('UDP message sent to ' + HOST + ':' + PORT);
-    client.close();
-  });
 
   // listen for keydown (key)
   //     var message = "key + " dfjsd
@@ -52,6 +43,19 @@ router.get('/', function(req, res, next) {
   //
   // // res.send();/
 
+}).post('/', function(req, res) {
+  console.log(req.body.message)
+  var PORT = 2000
+  var HOST = '192.168.1.3'
+
+  var dgram = require('dgram')
+  var message = new Buffer('*OPEN* ' + req.body.message + '\n*CLOS*')
+  var client = dgram.createSocket('udp4');
+  client.send(message, 0, message.length, PORT, HOST, function(err, bytes){
+    if(err) throw err;
+    client.close();
+  });
+  res.end()
 });
 
 

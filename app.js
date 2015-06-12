@@ -3,12 +3,14 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var http = require('http')
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+var server = http.createServer(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,6 +34,13 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+
+app.post('http://localhost:3000/', function(req, res){
+  console.log(req.body);
+  res.send(200);
+
+})
 
 // error handlers
 
